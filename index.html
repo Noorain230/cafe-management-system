@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Management - Menu Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">☕ BrewTheory</div>
+    <ul class="nav-links">
+      <li><a href="#menuGrid" data-page="index">Menu</a></li>
+      <li><a href="orders.html" style="color:inherit;text-decoration:none;">Orders</a></li>
+</xai:function_call >  
+<xai:function_call name="execute_command">
+<parameter name="command">
+    </ul>
+    <div>
+      <span class="cart-icon" onclick="toggleCart()">🛒 <span class="cart-count">0</span></span>
+      <button class="dark-toggle" title="Toggle Dark Mode">🌙</button>
+      <button class="logout-btn hidden">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  <div class="overlay" onclick="closeModals()"></div>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal">
+    <h3>Shopping Cart</h3>
+    <div id="cartItems"></div>
+    <button class="btn" onclick="window.location.href='order.html'" style="width:100%; margin-top:1rem;">Proceed to Checkout</button>
+    <button onclick="closeModals()" style="width:100%; background:var(--glass-bg); color:var(--text-primary);">Continue Shopping</button>
+  </div>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Crafted Brews, Timeless Taste</h1>
+      <p>From bold Americanos to delicate Pastries, every creation is thoughfully crafted for taste, comfort, and consistency.</p>
+      <a href="#menuGrid" class="btn pulse">Explore Menu</a>
+    </section>
+
+    <!-- Search -->
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search for coffee, tea...">
+    </div>
+
+    <!-- Filters -->
+    <div class="menu-filters">
+      <button class="filter-btn active" data-category="all">All</button>
+      <button class="filter-btn" data-category="coffee">Coffee</button>
+      <button class="filter-btn" data-category="tea">Tea</button>
+      <button class="filter-btn" data-category="food">Food</button>
+    </div>
+
+    <!-- Menu Grid -->
+    <div class="menu-grid" id="menuGrid"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

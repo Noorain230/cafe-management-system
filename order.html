@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Management - Order</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">☕ CafePro</div>
+    <ul class="nav-links">
+      <li><a href="#" data-page="index">Home</a></li>
+<li><a href="orders.html" style="color:inherit; text-decoration:none;">Orders</a></li>
+    </ul>
+    <div>
+      <span class="cart-icon" onclick="toggleCart()">🛒 <span class="cart-count">0</span></span>
+      <button class="dark-toggle" title="Toggle Dark Mode">🌙</button>
+      <button class="logout-btn hidden">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <main>
+    <div style="text-align:center; margin:3rem 0;">
+      <h1>Review & Place Order</h1>
+      <a href="index.html" class="btn" style="background:var(--glass-bg); margin:1rem;">← Back to Menu</a>
+    </div>
+
+    <div class="order-summary fade-in" id="orderSummary">
+      <!-- Cart summary + inputs -->
+      <div id="cartItemsSummary"></div>
+      <div class="form-group" id="customerInput">
+        <label for="customerName">Customer Name</label>
+        <input type="text" id="customerName" placeholder="Enter customer name" required>
+      </div>
+      <div class="form-group">
+        <label for="paymentMethod">Payment Method</label>
+        <select id="paymentMethod" style="width:100%; padding:1rem; border-radius:10px; background:var(--glass-bg);">
+          <option value="">Select...</option>
+          <option value="cash">Cash</option>
+          <option value="upi">UPI</option>
+        </select>
+      </div>
+      <div class="cart-total" id="orderTotal" style="margin-top:1rem;"></div>
+      <button class="btn" onclick="confirmOrder()" style="width:100%; margin-top:1rem;" id="confirmOrderBtn" disabled>Place Order</button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafe Management - Orders & Receipts</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">☕ CafePro</div>
+    <ul class="nav-links">
+      <li><a href="index.html" data-page="index.html">Home</a></li>
+    </ul>
+    <div>
+      <span class="cart-icon">🛒 <span class="cart-count">0</span></span>
+      <button class="dark-toggle">🌙</button>
+      <button class="logout-btn hidden">Logout</button>
+    </div>
+  </nav>
+
+  <main>
+    <div style="text-align:center; margin:3rem 0;">
+      <h1>Order History & Receipts</h1>
+      <a href="index.html" class="btn" style="background:var(--glass-bg);">← Menu</a>
+    </div>
+
+    <div class="order-summary" style="max-width:1200px; margin:0 auto;">
+      <table class="table" id="ordersTable">
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Items</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Payment Method</th>
+            <th>Receipt</th>
+            <th>Action</th>
+
+          </tr>
+        </thead>
+        <tbody id="ordersBody">
+          <tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    // Orders page only - standalone
+    window.addEventListener('DOMContentLoaded', function() {
+      const tbody = document.querySelector('#ordersBody');
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      
+      if (orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-secondary);">No orders placed yet</td></tr>';
+        return;
+      }
+      
+      tbody.innerHTML = orders.map((order, index) => {
+        const itemsText = order.items.map(item => item.name + ' x' + item.qty).join(', ');
+        return `
+          <tr>
+            <td>${order.customerName}</td>
+            <td>${itemsText}</td>
+            <td>₹${order.totalAmount}</td>
+            <td>${order.date}</td>
+            <td>${order.time}</td>
+            <td>${order.paymentMethod}</td>
+            <td><button class="btn" onclick="generateReceipt(${index})" style="padding:0.5rem 1rem; font-size:0.9rem;">Receipt</button></td>
+            <td><button onclick="deleteOrder(${index})" style="background:var(--error); color:white; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-size:0.9rem;">Delete</button></td>
+          </tr>`;
+
+      }).join('');
+    });
+
+    function generateReceipt(index) {
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      const order = orders[index];
+      if (!order) return alert('Receipt error');
+      
+      let receipt = '=== Cafe Receipt ===\n\nCustomer Name: ' + order.customerName + '\n\nItems bought:\n';
+      order.items.forEach(item => {
+        receipt += '- ' + item.name + ' x' + item.qty + ': ₹' + (item.price * item.qty).toFixed(2) + '\n';
+      });
+      receipt += '\nTotal Amount: ₹' + order.totalAmount + '\nDate: ' + order.date + '\nTime: ' + order.time + '\nPayment Method: ' + order.paymentMethod + '\n\nThank you! Visit Again ☕\n===============\n';
+      
+      const blob = new Blob([receipt], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'receipt_' + order.customerName + '_' + order.date + '.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    alert('Receipt downloaded!');
+  }
+
+  function deleteOrder(index) {
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.splice(index, 1);
+    localStorage.setItem('orders', JSON.stringify(orders));
+    
+    // Reload table
+    const tbody = document.querySelector('#ordersBody');
+    if (orders.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-secondary);">No orders placed yet</td></tr>';
+    } else {
+      tbody.innerHTML = orders.map((order, newIndex) => {
+        const itemsText = order.items.map(item => item.name + ' x' + item.qty).join(', ');
+        return `
+          <tr>
+            <td>${order.customerName}</td>
+            <td>${itemsText}</td>
+            <td>₹${order.totalAmount}</td>
+            <td>${order.date}</td>
+            <td>${order.time}</td>
+            <td>${order.paymentMethod}</td>
+            <td><button class="btn" onclick="generateReceipt(${newIndex})" style="padding:0.5rem 1rem; font-size:0.9rem;">Receipt</button></td>
+            <td><button onclick="deleteOrder(${newIndex})" style="background:var(--error); color:white; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-size:0.9rem;">Delete</button></td>
+          </tr>`;
+      }).join('');
+    }
+    alert('Order deleted!');
+  }
+  </script>
+
+</body>
+</html>
