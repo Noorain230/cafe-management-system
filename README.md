@@ -31,7 +31,7 @@ An interactive Cafe Management Web Application featuring dynamic menu, cart func
 
 1. Download or clone the project
 2. Open "login.html" or "index.html" in your browser
-3. Use the system
+3. Username: admin | Password: manager
 
 ---
 
